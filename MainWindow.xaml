@@ -1,0 +1,13 @@
+﻿<Window x:Class="CPUTempBigPicture.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CPUTempBigPicture"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="515" Width="776">
+    <Grid Background="Black">
+        <TextBox x:Name="TextCPU" TextWrapping="Wrap" Background="Black" Foreground="Lime" FontSize="36" BorderBrush="Black" RenderTransformOrigin="0.5,0.5" FontFamily="ROG Fonts"/>
+        <Button x:Name="MaximizeButton" Content="▲" Margin="0,0,14,14" Foreground="Yellow" BorderBrush="Black" Background="Black" Click="MaximizeButton_Click" Height="43" VerticalAlignment="Bottom" FontSize="8" HorizontalAlignment="Right" Width="47"/>
+    </Grid>
+</Window>
