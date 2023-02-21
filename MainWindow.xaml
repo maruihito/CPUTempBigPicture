@@ -6,8 +6,16 @@
         xmlns:local="clr-namespace:CPUTempBigPicture"
         mc:Ignorable="d"
         Title="MainWindow" Height="515" Width="776">
-    <Grid Background="Black">
-        <TextBox x:Name="TextCPU" TextWrapping="Wrap" Background="Black" Foreground="Lime" FontSize="36" BorderBrush="Black" RenderTransformOrigin="0.5,0.5" FontFamily="ROG Fonts"/>
-        <Button x:Name="MaximizeButton" Content="▲" Margin="0,0,14,14" Foreground="Yellow" BorderBrush="Black" Background="Black" Click="MaximizeButton_Click" Height="43" VerticalAlignment="Bottom" FontSize="8" HorizontalAlignment="Right" Width="47"/>
+    <Grid x:Name="Grid1" Background="Black">
+
+
+        <TextBlock x:Name="TextCPU1" TextWrapping="Wrap" FontFamily="ROG Fonts" Foreground="Lime" VerticalAlignment="Top" Height="312"/>
+
+
+        <TextBlock x:Name="TextCPU2" TextWrapping="Wrap" FontFamily="ROG Fonts" Foreground="Lime" Margin="0,312,0,0" VerticalAlignment="Bottom"/>
+
+        <Button x:Name="MaximizeButton" Content="▲" Margin="0,0,14,14" Foreground="Yellow" BorderBrush="Black" Background="Black" Click="MaximizeButton_Click" Height="43" VerticalAlignment="Bottom" FontSize="8" HorizontalAlignment="Right" Width="47" Grid.Row="1"/>
+
+
     </Grid>
 </Window>

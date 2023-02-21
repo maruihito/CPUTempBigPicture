@@ -17,6 +17,7 @@ using System.ComponentModel;
 using System.Windows.Threading;
 using LibreHardwareMonitor.Hardware;
 using System.Text.RegularExpressions;
+using LibreHardwareMonitor.Hardware.CPU;
 
 namespace CPUTempBigPicture
 {
@@ -25,6 +26,9 @@ namespace CPUTempBigPicture
     /// </summary>
     public partial class MainWindow : Window
     {
+        string monitorOutput1;
+        string monitorOutput2;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -34,8 +38,21 @@ namespace CPUTempBigPicture
         // タイマメソッド
         private void MyTimerMethod(object sender, EventArgs e)
         {
-            this.TextCPU.Text = DispCPUGPU();
-            this.TextCPU.FontSize = ((int)this.TextCPU.ActualWidth) / 7;
+            // ウィンドウサイズからテキストブロックのサイズを調整
+            this.TextCPU1.Height = (int)(this.Grid1.ActualHeight / 3 * 2);
+            this.TextCPU2.Height = (int)(this.Grid1.ActualHeight / 3 * 1);
+
+            // 情報を取得
+            DispCPUGPU();
+
+            // 取得した情報を表示
+            this.TextCPU1.Text = monitorOutput1;
+            this.TextCPU1.FontSize = ((int)this.TextCPU1.ActualWidth) / 7;
+            this.TextCPU2.Text = monitorOutput2;
+            this.TextCPU2.FontSize = ((int)this.TextCPU2.ActualWidth) / 16.5;
+
+            //this.TextCPU1.Text = AllMonitor();
+            //this.TextCPU1.FontSize = 12;
         }
 
         // タイマのインスタンス
@@ -70,13 +87,26 @@ namespace CPUTempBigPicture
         [GeneratedRegex(".*CPU Package.*")]
         private static partial Regex CPUPackage_Regex();
 
+        [GeneratedRegex(".*CPU Core #.*")]
+        private static partial Regex CPUCoreNum_Regex();
+
         [GeneratedRegex(".*GPU.*")]
         private static partial Regex GPU_Regex();
 
         // CPUGPUだけ表示する版
-        private string DispCPUGPU()
+        private void DispCPUGPU()
         {
-            string monitorOutput = "";
+            float cpuTemp = 0;
+            bool cpuTempFlg = false;
+            float gpuTemp = 0;
+            bool gpuTempFlg = false;
+
+            float[] cpuClocks = new float[255];
+            int cpuCoreCnt = 0;
+            float   gpuClock = 0;
+
+            monitorOutput1 = "";
+            monitorOutput2 = "";
             Computer computer = new Computer
             {
                 IsCpuEnabled = true,
@@ -106,21 +136,58 @@ namespace CPUTempBigPicture
 */
                 foreach (ISensor sensor in hardware.Sensors)
                 {
-                    if(CPUPackage_Regex().IsMatch(sensor.Name))
+                    if(CPUPackage_Regex().IsMatch(sensor.Name) )
                     {
-                        monitorOutput += "CPU: " + sensor.Value + " ﾟC\n";
-                        break;
+                        if(!cpuTempFlg && (sensor.SensorType == SensorType.Temperature))
+                        {
+                            cpuTemp = (float)sensor.Value;
+                            cpuTempFlg = true;
+                        }
+
+                    }
+                    else if(CPUCoreNum_Regex().IsMatch(sensor.Name))
+                    {
+                        if(sensor.SensorType == SensorType.Clock)
+                        {
+                            cpuClocks[cpuCoreCnt] = (float)sensor.Value;
+                            cpuCoreCnt++;
+                        }
                     }
                     else if(GPU_Regex().IsMatch(sensor.Name))
                     {
-                        monitorOutput += "GPU: " + sensor.Value + " ﾟC\n";
-                        break;
+                        if (!gpuTempFlg && (sensor.SensorType == SensorType.Temperature))
+                        {
+                            gpuTemp = (float)sensor.Value;
+                            gpuTempFlg = true;
+                        }
+                        else if(sensor.SensorType == SensorType.Clock)
+                        {
+                            gpuClock = (float)sensor.Value;
+                            break;
+                        }
                     }
                 }
             }
 
+            // CPU、GPUの温度
+            monitorOutput1 += "CPU: " + cpuTemp + " ﾟC\n";
+            monitorOutput1 += "GPU: " + gpuTemp + " ﾟC\n";
+
+            // CPUのクロック(最大値)
+            float cpuMax = 0.0f;
+            for (int i=0; i< cpuCoreCnt; i++)
+            {
+                if(cpuMax < cpuClocks[i])
+                {
+                    cpuMax = cpuClocks[i];
+                }
+
+            }
+            monitorOutput2 += "CPU Clock: " + cpuMax.ToString("F1") + " MHz\n";
+            monitorOutput2 += "GPU Clock: " + gpuClock.ToString("F1") + " MHz\n";
+
             computer.Close();
-            return monitorOutput;
+
         }
             // 全部表示する版
             private string AllMonitor()
