@@ -1,5 +1,5 @@
 # CPUTempBigPicture
-CPUGPUの温度を表示するだけ(IntelCPU/nVidiaGPU)
+CPUGPUの温度、クロックをデカデカと表示するだけ(IntelCPU/nVidiaGPU)
 
 使用ライブラリ:LibreHardwareMonitorLib 0.9.1
     https://github.com/LibreHardwareMonitor/LibreHardwareMonitor
