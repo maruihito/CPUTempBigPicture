@@ -121,19 +121,6 @@ namespace CPUTempBigPicture
                 // UHD Graphicsは表示しない
                 if (UHD_Regex().IsMatch(hardware.Name)) break;
 
-                // HW名は省略
-                // monitorOutput += "Hardware: " + hardware.Name + "\n";
-/*
-                foreach (IHardware subhardware in hardware.SubHardware)
-                {
-                    monitorOutput += "\tSubhardware: " + subhardware.Name + "\n";
-
-                    foreach (ISensor sensor in subhardware.Sensors)
-                    {
-                        monitorOutput += "\t\tSensor: " + sensor.Name + ", value: " + sensor.Value + "\n";
-                    }
-                }
-*/
                 foreach (ISensor sensor in hardware.Sensors)
                 {
                     if(CPUPackage_Regex().IsMatch(sensor.Name) )
