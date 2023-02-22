@@ -1,11 +1,11 @@
-﻿<Window x:Class="CPUTempBigPicture.MainWindow"
+﻿<Window x:Name="CPUTempBP" x:Class="CPUTempBigPicture.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CPUTempBigPicture"
         mc:Ignorable="d"
-        Title="MainWindow" Height="515" Width="776">
+        Title="CPUTempBP" Height="515" Width="776">
     <Grid x:Name="Grid1" Background="Black">
 
 
