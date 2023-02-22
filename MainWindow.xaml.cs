@@ -131,20 +131,7 @@ namespace CPUTempBigPicture
             // 取得した情報を表示
             this.TextCPU1.Text = monitorOutput1;
             this.TextCPU1.FontSize = ((int)this.TextCPU1.ActualWidth) / 7;
-            if(timerCnt < 4)
-            {
-                // 周波数を表示
-                this.TextCPU2.Text = monitorOutput2;
-
-            }
-            else
-            {
-                // 温度を表示
-                this.TextCPU2.Text = monitorOutput3;
-            }
-            this.TextCPU2.FontSize = ((int)this.TextCPU2.ActualWidth) / 16.5;
-
-            if(GetCGI.cpuTemp >= 60 || GetCGI.gpuTemp>=60)
+            if (GetCGI.cpuTemp >= 60 || GetCGI.gpuTemp >= 60)
             {
                 this.TextCPU1.Foreground = Brushes.OrangeRed;
             }
@@ -152,7 +139,22 @@ namespace CPUTempBigPicture
             {
                 this.TextCPU1.Foreground = Brushes.SpringGreen;
             }
-            this.TextCPU2.Foreground = Brushes.SteelBlue;
+
+            if (timerCnt < 4)
+            {
+                // 周波数を表示
+                this.TextCPU2.Text = monitorOutput2;
+                this.TextCPU2.Foreground = Brushes.SteelBlue;
+            }
+            else
+            {
+                // 電力を表示
+                this.TextCPU2.Text = monitorOutput3;
+                this.TextCPU2.Foreground = Brushes.Goldenrod;
+            }
+            this.TextCPU2.FontSize = ((int)this.TextCPU2.ActualWidth) / 16.5;
+
+
 
 
             //this.TextCPU1.Text = AllMonitor();
