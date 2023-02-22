@@ -11,9 +11,12 @@ namespace CPUTempBigPicture
 {
     public partial class GetCPUGPUInfo
     {
-        public string monitorOutput1 = "";
-        public string monitorOutput2 = "";
-
+        public float cpuTemp = 0.0f;
+        public float gpuTemp = 0.0f;
+        public float gpuClock = 0.0f;
+        public float cpuMax = 0.0f;
+        public float cpuPow = 0.0f;
+        public float gpuPow = 0.0f;
 
         [GeneratedRegex(".*UHD.*")]
         private static partial Regex UHD_Regex();
@@ -24,23 +27,20 @@ namespace CPUTempBigPicture
         [GeneratedRegex(".*CPU Core #.*")]
         private static partial Regex CPUCoreNum_Regex();
 
-        [GeneratedRegex(".*GPU.*")]
-        private static partial Regex GPU_Regex();
+        [GeneratedRegex(".*GPU Core.*")]
+        private static partial Regex GPUCore_Regex();
+
+        [GeneratedRegex(".*GPU Package.*")]
+        private static partial Regex GPUPackage_Regex();
 
         // CPUGPUだけ表示する版
         public void DispCPUGPU()
         {
-            float cpuTemp = 0;
             bool cpuTempFlg = false;
-            float gpuTemp = 0;
             bool gpuTempFlg = false;
-
-            float[] cpuClocks = new float[255];
+            float[] cpuClocks = new float[64];
             int cpuCoreCnt = 0;
-            float gpuClock = 0;
 
-            monitorOutput1 = "";
-            monitorOutput2 = "";
             Computer computer = new Computer
             {
                 IsCpuEnabled = true,
@@ -64,6 +64,10 @@ namespace CPUTempBigPicture
                             cpuTemp = (float)sensor.Value;
                             cpuTempFlg = true;
                         }
+                        else if(sensor.SensorType == SensorType.Power)
+                        {
+                            cpuPow = (float)sensor.Value;
+                        }
 
                     }
                     else if (CPUCoreNum_Regex().IsMatch(sensor.Name))
@@ -74,7 +78,14 @@ namespace CPUTempBigPicture
                             cpuCoreCnt++;
                         }
                     }
-                    else if (GPU_Regex().IsMatch(sensor.Name))
+                    else if (GPUPackage_Regex().IsMatch(sensor.Name))
+                    {
+                        if (sensor.SensorType == SensorType.Power)
+                        {
+                            gpuPow = (float)sensor.Value;
+                        }
+                    }
+                    else if (GPUCore_Regex().IsMatch(sensor.Name))
                     {
                         if (!gpuTempFlg && (sensor.SensorType == SensorType.Temperature))
                         {
@@ -84,18 +95,12 @@ namespace CPUTempBigPicture
                         else if (sensor.SensorType == SensorType.Clock)
                         {
                             gpuClock = (float)sensor.Value;
-                            break;
                         }
                     }
                 }
             }
 
-            // CPU、GPUの温度
-            monitorOutput1 += "CPU: " + cpuTemp + " ﾟC\n";
-            monitorOutput1 += "GPU: " + gpuTemp + " ﾟC\n";
-
             // CPUのクロック(最大値)
-            float cpuMax = 0.0f;
             for (int i = 0; i < cpuCoreCnt; i++)
             {
                 if (cpuMax < cpuClocks[i])
@@ -104,8 +109,6 @@ namespace CPUTempBigPicture
                 }
 
             }
-            monitorOutput2 += "CPU Clock: " + cpuMax.ToString("F1") + " MHz\n";
-            monitorOutput2 += "GPU Clock: " + gpuClock.ToString("F1") + " MHz\n";
 
             computer.Close();
 
@@ -156,8 +159,7 @@ namespace CPUTempBigPicture
         //Disposeメソッドを実装
         public void Dispose()
         {
-            monitorOutput1 = null;
-            monitorOutput2 = null;
+
         }
     }
 }
