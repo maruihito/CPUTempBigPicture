@@ -18,6 +18,7 @@ using System.Windows.Threading;
 using LibreHardwareMonitor.Hardware;
 using System.Text.RegularExpressions;
 using LibreHardwareMonitor.Hardware.CPU;
+using System.IO;
 
 namespace CPUTempBigPicture
 {
@@ -30,20 +31,24 @@ namespace CPUTempBigPicture
         public MainWindow()
         {
             InitializeComponent();
-            SetupTimer();
+            this.SetupTimer();
+
+            // 動画読み込み
+            this.SetupMedia();
         }
 
         // タイマメソッド
         private void MyTimerMethod(object sender, EventArgs e)
         {
+            // 画面情報の更新
             UpdateScreen();
-            if( timerCnt != 7 )
+            if ( this.timerCnt != 7 )
             {
-                timerCnt++;
+                this.timerCnt++;
             }
             else
             {
-                timerCnt = 0;
+                this.timerCnt = 0;
             }
 
         }
@@ -53,6 +58,10 @@ namespace CPUTempBigPicture
 
         // タイマイベントの回数カウント
         private uint timerCnt = 0;
+
+        // カレントパス
+        string startPath = AppDomain.CurrentDomain.BaseDirectory;
+
 
         // タイマを設定する
         private void SetupTimer()
@@ -74,6 +83,56 @@ namespace CPUTempBigPicture
         private void StopTimer(object sender, CancelEventArgs e)
         {
             _timer.Stop();
+        }
+
+        // メディアの設定
+        private void SetupMedia()
+        {
+            try
+            {
+                // カレントフォルダの動画を探す
+                string[] names = Directory.GetFiles(@".", "*.mp4");
+                foreach (string name in names)
+                {
+                    // LoadBehaviorをマニュアルに設定(こうしないと連続再生できない)
+                    this.MediaElement.LoadedBehavior = MediaState.Manual;
+
+                    // 見つけた動画をUriに変換
+                    Uri uri = new Uri(startPath + name);
+                    this.MediaElement.Source = uri;
+
+                    // 再生速度
+                    this.MediaElement.SpeedRatio = 1.0;
+
+                    // 再生開始
+                    this.MediaElement.Play();
+
+                    this.Closing += new CancelEventHandler(StopMedia);
+                    break;
+                }
+            }
+            catch (Exception e)
+            {
+                // 動画取得エラー、特に何もしない
+            }
+        }
+
+        // 連続再生
+        private void MediaElement_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            this.RePlayMedia();
+        }
+
+        private void RePlayMedia()
+        {
+            this.MediaElement.Position = TimeSpan.FromMilliseconds(1);
+            this.MediaElement.Play();
+        }
+
+        private void StopMedia(object sender, CancelEventArgs e)
+        {
+            this.MediaElement.Stop();
+            this.MediaElement.Close();
         }
 
         private void MaximizeButton_Click(object sender, RoutedEventArgs e)
@@ -108,13 +167,19 @@ namespace CPUTempBigPicture
 
             // クラスインスタンス化
             GetCPUGPUInfo GetCGI = new GetCPUGPUInfo();
+            // 情報を取得
+            Task t1 = Task.Run(GetCGI.DispCPUGPU);
 
             // ウィンドウサイズからテキストブロックの高さを調整
             this.TextCPU1.Height = (int)(this.Grid1.ActualHeight / 3 * 2);
             this.TextCPU2.Height = (int)(this.Grid1.ActualHeight / 3 * 1);
 
-            // 情報を取得
-            GetCGI.DispCPUGPU();
+            // フォントサイズの調整
+            this.TextCPU1.FontSize = ((int)this.TextCPU1.ActualWidth) / 7;
+            this.TextCPU2.FontSize = ((int)this.TextCPU2.ActualWidth) / 16.5;
+
+            // 情報取得が完了するのを待つ
+            t1.Wait();
 
             // CPU、GPUの温度
             monitorOutput1 += "CPU: " + GetCGI.cpuTemp.ToString() + " ﾟC\n";
@@ -130,7 +195,7 @@ namespace CPUTempBigPicture
 
             // 取得した情報を表示
             this.TextCPU1.Text = monitorOutput1;
-            this.TextCPU1.FontSize = ((int)this.TextCPU1.ActualWidth) / 7;
+
             if (GetCGI.cpuTemp >= 60 || GetCGI.gpuTemp >= 60)
             {
                 this.TextCPU1.Foreground = Brushes.OrangeRed;
@@ -152,9 +217,6 @@ namespace CPUTempBigPicture
                 this.TextCPU2.Text = monitorOutput3;
                 this.TextCPU2.Foreground = Brushes.Goldenrod;
             }
-            this.TextCPU2.FontSize = ((int)this.TextCPU2.ActualWidth) / 16.5;
-
-
 
 
             //this.TextCPU1.Text = AllMonitor();
@@ -162,5 +224,6 @@ namespace CPUTempBigPicture
 
             GetCGI.Dispose();
         }
+
     }
 }

@@ -7,15 +7,17 @@
         mc:Ignorable="d"
         Title="CPUTempBP" Height="515" Width="776">
     <Grid x:Name="Grid1" Background="Black">
-
-
-        <TextBlock x:Name="TextCPU1" TextWrapping="Wrap" FontFamily="ROG Fonts" Foreground="Lime" VerticalAlignment="Top" Height="312"/>
-
-
-        <TextBlock x:Name="TextCPU2" TextWrapping="Wrap" FontFamily="ROG Fonts" Foreground="Lime" Margin="0,312,0,0" VerticalAlignment="Bottom"/>
-
+        <MediaElement x:Name="MediaElement" IsMuted="True" MediaEnded="MediaElement_MediaEnded" Opacity="0.5"/>
+        <TextBlock x:Name="TextCPU1" TextWrapping="Wrap" FontFamily="ROG Fonts" Foreground="Lime" VerticalAlignment="Top" Height="108">
+            <TextBlock.Effect>
+                <DropShadowEffect/>
+            </TextBlock.Effect>
+        </TextBlock>
+        <TextBlock x:Name="TextCPU2" TextWrapping="Wrap" FontFamily="ROG Fonts" Foreground="Lime" Margin="0,312,0,0" VerticalAlignment="Bottom">
+            <TextBlock.Effect>
+                <DropShadowEffect/>
+            </TextBlock.Effect>
+        </TextBlock>
         <Button x:Name="MaximizeButton" Content="▲" Margin="0,0,14,14" Foreground="Yellow" BorderBrush="Black" Background="Black" Click="MaximizeButton_Click" Height="43" VerticalAlignment="Bottom" FontSize="8" HorizontalAlignment="Right" Width="47" Grid.Row="1"/>
-
-
     </Grid>
 </Window>
