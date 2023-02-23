@@ -101,8 +101,8 @@ namespace CPUTempBigPicture
                     Uri uri = new Uri(startPath + name);
                     this.MediaElement.Source = uri;
 
-                    // 再生速度
-                    this.MediaElement.SpeedRatio = 1.0;
+                    // 再生速度(負荷軽減のため1/4に)
+                    this.MediaElement.SpeedRatio = 0.25;
 
                     // 再生開始
                     this.MediaElement.Play();
@@ -217,7 +217,6 @@ namespace CPUTempBigPicture
                 this.TextCPU2.Text = monitorOutput3;
                 this.TextCPU2.Foreground = Brushes.Goldenrod;
             }
-
 
             //this.TextCPU1.Text = AllMonitor();
             //this.TextCPU1.FontSize = 12;
