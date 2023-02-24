@@ -42,7 +42,7 @@ namespace CPUTempBigPicture
         {
             // 画面情報の更新
             UpdateScreen();
-            if ( this.timerCnt != 7 )
+            if (this.timerCnt != 7)
             {
                 this.timerCnt++;
             }
@@ -137,7 +137,7 @@ namespace CPUTempBigPicture
 
         private void MaximizeButton_Click(object sender, RoutedEventArgs e)
         {
-            if(this.WindowStyle != WindowStyle.None)
+            if (this.WindowStyle != WindowStyle.None)
             {
                 // タイトルバーと境界線を表示しない
                 this.WindowStyle = WindowStyle.None;
@@ -153,7 +153,6 @@ namespace CPUTempBigPicture
                 // 最大化解除
                 this.WindowState = WindowState.Normal;
             }
-
 
         }
 
@@ -223,6 +222,7 @@ namespace CPUTempBigPicture
 
             GetCGI.Dispose();
         }
+
 
     }
 }
