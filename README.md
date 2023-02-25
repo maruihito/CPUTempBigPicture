@@ -1,5 +1,5 @@
 # CPUTempBigPicture
-CPUGPUの温度、クロック、消費電力をデカデカと表示するだけ(Core i7 13700k/Geforce RTX4800のみ動作確認済み)
+CPUGPUの温度、クロック、消費電力をデカデカと表示するだけ(Core i7 13700k/Geforce RTX4080のみ動作確認済み)
 
 ・Visual Studio 2022 および .NET Core 7.0で作成 (.NET 7.0ランタイムのインストールが必要です)
 
