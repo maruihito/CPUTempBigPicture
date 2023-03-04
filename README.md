@@ -1,5 +1,6 @@
 # CPUTempBigPicture
 - CPUGPUの温度、クロック、消費電力をデカデカと表示するだけ
+    - [ビルド済み.exeはこちら](https://github.com/maruihito/CPUTempBigPicture/releases/tag/early)
     - i7 13700k/RTX4080のみ動作確認済
     - クロックと消費電力は16秒ごとに交互に表示
     - :warning:ASUS ROG FONTを使っています。ROGFONTがない場合はOS標準フォントでの表示になります
