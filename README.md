@@ -14,10 +14,10 @@ CPUGPUの温度、クロック、消費電力をデカデカと表示するだ�
 ・ビルド先のディレクトリにある動画(.mp4)を自動的に開き、負荷軽減のため1/4の速度で背景に流します<br>
 　動画がなければ真っ黒な背景になります<br>
 　背景素材は以下をお借りしています<br>
-　https://pixabay.com/ja/videos/3-d-%E3%83%AC%E3%83%B3%E3%83%80%E3%83%AA%E3%83%B3%E3%82%B0-%E5%8B%95%E3%81%8D-24715/
+　[pixabay/3-d-レンダリング-動き-24715](https://pixabay.com/ja/videos/3-d-%E3%83%AC%E3%83%B3%E3%83%80%E3%83%AA%E3%83%B3%E3%82%B0-%E5%8B%95%E3%81%8D-24715/)
 
 ・使用ライブラリ:LibreHardwareMonitorLib 0.9.1 (Nugetでインストールしてください、ビルド時に必要です)<br>
-　　　https://github.com/LibreHardwareMonitor/LibreHardwareMonitor
+　　　[LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor)
     
 ・ライセンス準拠：
     https://licenses.nuget.org/MPL-2.0
