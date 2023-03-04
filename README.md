@@ -1,7 +1,9 @@
 # CPUTempBigPicture
 CPUGPUの温度、クロック、消費電力をデカデカと表示するだけ(i7 13700k/RTX4080のみ動作確認済)<br>
 クロックと消費電力は16秒ごとに交互に表示<br>
-[NOTE] ASUS ROG FONTを使っています。ROGFONTがない場合はOS標準フォントでの表示になります。
+<span style="color: red; ">[NOTE] ASUS ROG FONTを使っています。ROGFONTがない場合はOS標準フォントでの表示になります</span>
+以下等からDL(自己責任で)
+https://eng.m.fontke.com/font/22960173/download/
 
 ![CPUTempmini](https://user-images.githubusercontent.com/125875827/222867720-ad8e4159-e428-4e14-ba09-0dfbf124e211.jpg)
 
