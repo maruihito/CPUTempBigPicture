@@ -1,5 +1,5 @@
 # CPUTempBigPicture
-CPUGPUの温度、クロック、消費電力をデカデカと表示するだけ(Core i7 13700k/Geforce RTX4080のみ動作確認済み)
+CPUGPUの温度、クロック、消費電力をデカデカと表示するだけ(i7 13700k/RTX4080のみ動作確認済)<br>
 クロックと消費電力は16秒ごとに交互に表示
 
 ![CPUTempmini](https://user-images.githubusercontent.com/125875827/222867720-ad8e4159-e428-4e14-ba09-0dfbf124e211.jpg)
