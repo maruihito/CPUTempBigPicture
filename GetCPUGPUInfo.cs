@@ -24,7 +24,13 @@ namespace CPUTempBigPicture
         [GeneratedRegex(".*CPU Package.*")]
         private static partial Regex CPUPackage_Regex();
 
-        [GeneratedRegex(".*CPU Core #.*")]
+        [GeneratedRegex(".*CPU PPT.*")]
+        private static partial Regex CPUPPT_Regex();
+
+        [GeneratedRegex(".*Tctl.*")]
+        private static partial Regex CPUTctl_Regex();
+
+        [GeneratedRegex(".*Core #.*")]
         private static partial Regex CPUCoreNum_Regex();
 
         [GeneratedRegex(".*GPU Core.*")]
@@ -57,7 +63,7 @@ namespace CPUTempBigPicture
 
                 foreach (ISensor sensor in hardware.Sensors)
                 {
-                    if (CPUPackage_Regex().IsMatch(sensor.Name))
+                    if (CPUPackage_Regex().IsMatch(sensor.Name))    // for Intel
                     {
                         if (!cpuTempFlg && (sensor.SensorType == SensorType.Temperature))
                         {
@@ -69,6 +75,21 @@ namespace CPUTempBigPicture
                             cpuPow = (float)sensor.Value;
                         }
 
+                    }
+                    else if(CPUPPT_Regex().IsMatch(sensor.Name))    // for AMD
+                    {
+                        if (sensor.SensorType == SensorType.Power)
+                        {
+                            cpuPow = (float)sensor.Value;
+                        }
+                    }
+                    else if (CPUTctl_Regex().IsMatch(sensor.Name))  // for AMD
+                    {
+                        if (!cpuTempFlg && (sensor.SensorType == SensorType.Temperature))
+                        {
+                            cpuTemp = (float)sensor.Value;
+                            cpuTempFlg = true;
+                        }
                     }
                     else if (CPUCoreNum_Regex().IsMatch(sensor.Name))
                     {
@@ -114,7 +135,7 @@ namespace CPUTempBigPicture
 
         }
         // 全部表示する版
-        private string AllMonitor()
+        public string AllMonitor()
         {
             string monitorOutput = "";
 

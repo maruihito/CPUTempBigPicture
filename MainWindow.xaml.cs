@@ -17,7 +17,6 @@ using System.ComponentModel;
 using System.Windows.Threading;
 using LibreHardwareMonitor.Hardware;
 using System.Text.RegularExpressions;
-using LibreHardwareMonitor.Hardware.CPU;
 using System.IO;
 
 namespace CPUTempBigPicture
@@ -35,6 +34,9 @@ namespace CPUTempBigPicture
 
             // 動画読み込み
             this.SetupMedia();
+
+            // デバッグ情報書き出し
+            this.OutputTextAllSensors();
         }
 
         // タイマメソッド
@@ -156,6 +158,21 @@ namespace CPUTempBigPicture
 
         }
 
+        /// 全モニタリング情報の書き出し(デバッグ用)
+        private void OutputTextAllSensors()
+        {
+            using (StreamWriter sw = new StreamWriter(@".\debug.txt", true, Encoding.UTF8))
+            {
+                string monitorAllInfo = "";
+                // 全Monitor情報を取得
+                GetCPUGPUInfo GetCGI = new GetCPUGPUInfo();
+                monitorAllInfo = GetCGI.AllMonitor();
+                GetCGI.Dispose();
+
+                sw.Write(monitorAllInfo);
+            }
+        }
+
         /// 画面情報の更新
         private void UpdateScreen()
         {
@@ -181,8 +198,8 @@ namespace CPUTempBigPicture
             t1.Wait();
 
             // CPU、GPUの温度
-            monitorOutput1 += "CPU: " + GetCGI.cpuTemp.ToString() + " ﾟC\n";
-            monitorOutput1 += "GPU: " + GetCGI.gpuTemp.ToString() + " ﾟC\n";
+            monitorOutput1 += "CPU: " + GetCGI.cpuTemp.ToString("F0") + " ﾟC\n";
+            monitorOutput1 += "GPU: " + GetCGI.gpuTemp.ToString("F0") + " ﾟC\n";
 
             // クロック
             monitorOutput2 += "CPU Clock: " + GetCGI.cpuMax.ToString("F1") + " MHz\n";
